@@ -1,4 +1,4 @@
-<!-- <div class="content"> -->
+<div class="content"> -->
 	<div class="main_content">
 		<div class="home_wrapper">
 			<div class="home-title">Dzień dobry !</div>
@@ -15,7 +15,7 @@
 				3.Obsługę podłączonego noda, czyli jeśli ruszam nod, to linia będzie podążać za gniazdem;<br>
 				4.Możliwóść komunikowania się między nodami, czyli jeśli wpiszę coś w jeden nod, to zmieni się zawartość węzła podrzędnego;<br>
 			</p><br>
-			<div class="home-title">Htaccess</div>
+			<!-- <div class="home-title">Htaccess</div>
 			<p class="home-text">
 				Plik .htaccess służy do tego, żeby strona nie szukała katalogów, które nie istnieją. <br>
 				np. jeśli z wyłączonym trybem .htaccess wyszukać w URLu /home/catalogs, to zostanę na tej samej stronie, lecz w tedy pliki css i js<br> podłączone zewnętrznie nie będą działać. To się przyda w przyszłości.
@@ -23,10 +23,10 @@
 			<br>
 			<form action="php/turn_on_htaccess.php" method="post">
 				<button name="turn_on_htaccess">Włączyć tryb .htaccess</button>
-			</form><br>
+			</form><br> -->
 			<h3>A tutorial for the math constructor</h3>
 			<h3>Poradnik do konstruktora matematycznego</h3>
 			<video src="<?=$link_to_dir?>img/tutorial.mp4" width="480" height="270" poster="poster.gif" controls></video>
 		</div>
 	</div>
-<!-- </div> -->
+<!-- </div>
