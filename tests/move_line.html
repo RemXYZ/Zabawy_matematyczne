@@ -1,0 +1,238 @@
+<!--!!! The whole file was written by an individual Rem Karablin except for sources that are highlighted as //sourse [url] ... //sourceEnd OR </!--sourse [url] ... //sourceEnd --/> !!!-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		.point {
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: rgb(234,102,019);
+			left: 300px;
+			top: 300px;
+			cursor: pointer;
+		}
+		.line_origin {
+			position: absolute;
+			bottom: 0;
+			left:50%;
+		}
+		.line_box {
+			position: absolute;
+			width: 200px;
+			height: 300px;
+			border: 1px solid red;
+		}
+		.line_box::before {
+			content:"";
+			position: absolute;
+			left: -202px;
+			top: -1px;
+			width: 200px;
+			height: 300px;
+			border: 1px solid red;
+		}
+		.line_box::after {
+			content:"";
+			position: absolute;
+			top: -312px;
+			width: 200px;
+			height: 300px;
+			border: 1px solid red;
+		}
+		.line {
+			position: relative;
+			width: 0px;
+			height: 1px;
+			background: #000;
+			transform-origin: bottom left;
+			transform: rotate(56.3deg);
+			cursor: default;
+		}
+	</style>
+</head>
+<body>
+	<div class="point">
+		<div class="line_origin">
+			<div class="line_box"></div>
+			<div class="line"></div>
+		</div>
+	</div>
+
+<script>
+const point = document.querySelector(".point");	
+const line = document.querySelector(".line");
+
+point.addEventListener("mousedown",m_downD_D_line);
+
+function cos_deg (angle) {
+	return Number(Math.cos(angle*Math.PI/180).toFixed(4));
+}
+function sin_deg (angle) {
+	return Number(Math.sin(angle*Math.PI/180).toFixed(4));
+}
+
+function find_angle_tgmt (x,y) {
+	//Checking...
+	if (Number.isNaN(Number(x))  || Number.isNaN(Number(x)) || x === undefined || y === undefined) {
+		console.error("The value must be a number and can't be undefined");
+		return false;
+	}
+	//Pythagoras' theorem
+	//Szukam r (promien) za pomoca tw. Pitagorasa
+	//Ищу r (радиус) с помощью теоремы Пифагора
+	let r = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+	r = Number(r.toFixed(4));
+	//Szukam kat linii za pomoca cos, poniewaz deg jest skierowany w prawa strone (w dol)
+	
+	let cosalfa =  x/r;
+	let sinalfa = y/r;
+
+
+
+for (let angle = 0; 90>=angle;angle++) {
+	if (x>0 && y < 0) {
+	var x_v = cos_deg(angle);
+		if (Math.abs(cosalfa)>=x_v) {
+			var x_v2 = cos_deg(angle-1);
+			let pct = (x_v2-cosalfa)/(x_v2-x_v);
+			return {"value":cosalfa,"x_v":x_v,"x_v2":x_v2,"percent":pct,"deg":angle-1+pct,"deg2":angle,"r":r};
+			break;
+		}
+	}
+	if (x<0 && y<0) {
+		var x_v = sin_deg(angle);
+		if (Math.abs(cosalfa)<=x_v) {
+			var x_v2 = sin_deg(angle-1);
+			let pct = (x_v2-Math.abs(cosalfa))/(x_v2-x_v);
+			return {"value":cosalfa,"x_v":x_v,"x_v2":x_v2,"percent":pct,"deg":90+angle-1+pct,"deg2":angle,"r":r};
+			break;
+		}
+	}
+	if (x<0 && y>0) {
+		var x_v = sin_deg(angle);
+		if (Math.abs(sinalfa)<=x_v) {
+			var x_v2 = sin_deg(angle-1);
+			let pct = (x_v2-Math.abs(sinalfa))/(x_v2-x_v);
+			return {"value":sinalfa,"x_v":x_v,"x_v2":x_v2,"percent":pct,"deg":180+angle-1+pct,"deg2":angle,"r":r};
+			break;
+		}
+	}
+	if (x>0 && y>0) {
+		var x_v = sin_deg(angle);
+		if (Math.abs(cosalfa)<=x_v) {
+			var x_v2 = sin_deg(angle-1);
+			let pct = (x_v2-Math.abs(cosalfa))/(x_v2-x_v);
+			return {"value":sinalfa,"x_v":x_v,"x_v2":x_v2,"percent":pct,"deg":270+angle-1+pct,"deg2":angle,"r":r};
+			break;
+		}
+	}
+
+
+}
+	if (x<0 && y<0) {
+		return {"value":0,"deg":90,"r":r};
+	}
+	if (x<0 && y>0) {
+		return {"value":0,"deg":180,"r":r};
+	}
+	if (x>0 && y>0) {
+		return {"value":0,"deg":270,"r":r};
+	}
+	return {"value":0,"deg":0,"r":r};
+
+}
+
+function m_downD_D_line (e) {
+const el = this;
+	window.addEventListener("mousemove",m_moveD_D);
+	window.addEventListener("mouseup",m_upD_D);
+
+	const mouse = {
+		"x":e.x,
+		"y":e.y
+	}
+	function F_objCrd (el) {
+		return {
+			x:getCoords(el).left,
+			y:getCoords(el).top,
+			w:el.offsetWidth,
+			h:el.offsetHeight
+		}
+	}
+
+	const lineCrd = F_objCrd(line);
+	const elCrd = F_objCrd(el);
+
+	// console.log(e.x-elCrd.x)
+	// console.log(e.x)
+
+	function m_moveD_D (e) {
+
+		mouse.x = e.x - mouse.x;
+		mouse.y = e.y - mouse.y;
+
+		let crdX = e.x - lineCrd.x - window.pageXOffset;
+		let crdY = lineCrd.y - e.y - window.pageYOffset;
+
+		// console.log(Number(cosalfa.toFixed(4)))
+		var tgmt_arg = find_angle_tgmt (crdX,crdY);
+		console.log(tgmt_arg)
+		lineCrd.w = tgmt_arg.r;
+		line.style.width = lineCrd.w + "px";
+		line.style.transform = "rotate("+tgmt_arg.deg+"deg)";
+
+
+		// console.group ("X")
+		// console.log(lineCrd.x)
+		// console.log(e.x)
+		// console.log(crdX)
+		// console.groupEnd();
+
+		// console.group ("Y")
+		// console.log(lineCrd.y)
+		// console.log(e.y)
+		// console.log(crdY)
+		// console.groupEnd();
+		
+
+
+		mouse.x = e.x;
+		mouse.y = e.y;
+	}
+	
+
+	function m_upD_D (e) {
+		window.removeEventListener("mousemove",m_moveD_D);
+		line.style.width = 0 + "px";
+	}
+
+}
+
+// console.log(Math.cos(2*Math.PI/180))
+//source https://learn.javascript.ru/coordinates-document
+function getCoords(elem) { // кроме IE8-
+  var box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+
+}
+//sourseEnd
+
+// console.log(2/3.6)
+
+// console.log((0.5592-0.5556)/(0.5592-0.5446))
+
+// console.log(Math.cos(56.24657534246575571*Math.PI/180))
+
+
+</script>
+</body>
+</html>
